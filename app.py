@@ -86,7 +86,6 @@ async def init_conversation():
     global conversation_chain
     try:
         conversation_chain = train_model_from_directory("train_files")
-        print(conversation_chain)
         return {"message": "Conversation Initialized!","chain":conversation_chain}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -100,8 +99,7 @@ async def process_question(user_input: UserInput):
         user_question = user_input.question
         response = conversation_chain({'question': user_question})
         chat_history = response['chat_history']
-        print(response)
-        return {"chat_history": [{"role": message.role, "content": message.content} for message in chat_history]}
+        return {"chat_history": [{"content": message.content} for message in chat_history]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
