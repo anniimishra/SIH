@@ -11,8 +11,6 @@ from langchain.memory import ConversationBufferMemory
 import os
 import warnings
 
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-
 app = FastAPI()
 
 # CORS (Cross-Origin Resource Sharing) settings
