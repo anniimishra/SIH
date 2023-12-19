@@ -3,7 +3,7 @@ langchain
 PyPDF2
 streamlit
 google-generativeai
-faiss-cpu
+faiss-cpu==1.7.4
 altair
 tiktoken
 fastapi
