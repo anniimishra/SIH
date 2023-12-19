@@ -8,3 +8,5 @@ tiktoken
 fastapi
 uvicorn
 langchain-community
+
+
