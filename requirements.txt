@@ -7,3 +7,4 @@ altair
 tiktoken
 fastapi
 uvicorn
+langchain-community
