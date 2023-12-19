@@ -9,6 +9,9 @@ from langchain.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 import os
+import warnings
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 app = FastAPI()
 
@@ -53,10 +56,13 @@ os.environ['GOOGLE_API_KEY'] = 'AIzaSyAFoxSMMXltqhA2iiQ5f--u1tn6oJ4sDRA'
 def get_vector_store(text_chunks):
     try:
         google_api_key = os.getenv('GOOGLE_API_KEY')
+        print(5)
         if not google_api_key:
+            print(6)
             raise ValueError("Google API key not found. Please set the GOOGLE_API_KEY environment variable.")
-
+        print(7)
         embeddings = GooglePalmEmbeddings(google_api_key=google_api_key)
+        print(8)
     except Exception as e:
         print(f"Error initializing embeddings: {str(e)}")
         raise  # Re-raise the exception to propagate the error
@@ -64,12 +70,17 @@ def get_vector_store(text_chunks):
     vector_store = FAISS.from_texts(text_chunks, embeddings)
     return vector_store
 
+
 def get_conversational_chain(pdf_folder):
     try:
         pdf_files = [os.path.join(pdf_folder, file) for file in os.listdir(pdf_folder) if file.endswith(".pdf")]
+        print(1)
         raw_text = get_pdf_text(pdf_files)
+        print(2)
         text_chunks = get_text_chunks(raw_text)
+        print(3)
         vector_store = get_vector_store(text_chunks)
+        print(4)
         return ConversationalRetrievalChain.from_llm(llm=GooglePalm(), retriever=vector_store.as_retriever(), memory=ConversationBufferMemory(memory_key="chat_history", return_messages=True))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

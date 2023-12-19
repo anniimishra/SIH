@@ -7,4 +7,3 @@ altair
 tiktoken
 fastapi
 uvicorn
-langchain-core==0.1.1
