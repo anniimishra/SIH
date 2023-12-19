@@ -72,14 +72,12 @@ def get_vector_store(text_chunks):
 def get_conversational_chain(pdf_folder):
     try:
         pdf_files = [os.path.join(pdf_folder, file) for file in os.listdir(pdf_folder) if file.endswith(".pdf")]
-        print(1)
         raw_text = get_pdf_text(pdf_files)
-        print(2)
         text_chunks = get_text_chunks(raw_text)
-        print(3)
         vector_store = get_vector_store(text_chunks)
-        print(4)
-        return ConversationalRetrievalChain.from_llm(llm=GooglePalm(), retriever=vector_store.as_retriever(), memory=ConversationBufferMemory(memory_key="chat_history", return_messages=True))
+        
+        # Use from_llm_retriever instead of from_llm
+        ConversationalRetrievalChain.from_llm(llm=GooglePalm(), retriever=vector_store.as_retriever(), memory=ConversationBufferMemory(memory_key="chat_history", return_messages=True))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
